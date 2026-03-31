@@ -40,6 +40,28 @@ Complete backup and restore solution for OpenClaw state.
 ./scripts/time-machine.sh migrate user@new-server.com
 ```
 
+## Handling Backup Count Queries
+
+When user asks "有几个备份", "how many backups", "backup count", or similar:
+
+1. Check the backup directory:
+   ```bash
+   ls -la ~/.time_machine/openclaw-soul-*.tar.gz 2>/dev/null
+   ```
+
+2. Report findings:
+   - **If directory empty/missing**: "还没有备份"
+   - **If backups exist**: "找到 N 个备份：" + 列出文件名、大小、创建时间
+   - **Show latest**: 特别指出最新的备份
+
+### Example Responses
+
+- "找到 3 个备份：
+  - openclaw-soul-20260331-004110.tar.gz (256KB, 3月31日)
+  - openclaw-soul-20260330-120000.tar.gz (251KB, 3月30日)
+  - openclaw-soul-20260328-080000.tar.gz (248KB, 3月28日)
+  最新的是 3月31日 的备份"
+
 ## Manual Migration Workflow
 
 Source server:
