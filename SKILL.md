@@ -1,10 +1,9 @@
 ---
 name: claw-time-machine
 description: Backup, restore, and migrate OpenClaw installations. Handles complete state preservation including workspace memories, credentials, skills, and configuration. Use when: (1) Backing up OpenClaw to prevent data loss, (2) Migrating to a new server, (3) Restoring from a backup, (4) User mentions "backup", "migrate", "时光机", or server transfer.
-version: 1.0.0
 ---
 
-# Time Machine - OpenClaw Backup & Migration
+# Claw Time Machine - OpenClaw Backup & Migration
 
 Complete backup and restore solution for OpenClaw state.
 
@@ -26,19 +25,19 @@ Complete backup and restore solution for OpenClaw state.
 
 ```bash
 # Create backup
-./scripts/time-machine.sh backup
+./scripts/claw-time-machine.sh backup
 
 # List backups (shows index numbers)
-./scripts/time-machine.sh list
+./scripts/claw-time-machine.sh list
 
 # Restore by index number
-./scripts/time-machine.sh restore 1
+./scripts/claw-time-machine.sh restore 1
 
 # Restore by filename
-./scripts/time-machine.sh restore openclaw-soul-20260331-004110.tar.gz
+./scripts/claw-time-machine.sh restore openclaw-soul-20260331-004110.tar.gz
 
 # One-click migrate to new server
-./scripts/time-machine.sh migrate user@new-server.com
+./scripts/claw-time-machine.sh migrate user@new-server.com
 ```
 
 ## Handling Backup Count Queries
@@ -47,7 +46,7 @@ When user asks "有几个备份", "how many backups", "backup count", or similar
 
 1. Check the backup directory:
    ```bash
-   ls -la ~/.time_machine/openclaw-soul-*.tar.gz 2>/dev/null
+   ls -la ~/.claw-time-machine/openclaw-soul-*.tar.gz 2>/dev/null
    ```
 
 2. Report findings:
@@ -68,14 +67,14 @@ When user asks "有几个备份", "how many backups", "backup count", or similar
 Source server:
 ```bash
 openclaw gateway stop
-./scripts/time-machine.sh backup
-scp ~/.time_machine/openclaw-soul-*.tar.gz new-server:~/
+./scripts/claw-time-machine.sh backup
+scp ~/.claw-time-machine/openclaw-soul-*.tar.gz new-server:~/
 ```
 
 Target server:
 ```bash
 curl -fsSL https://openclaw.ai/install.sh | bash
-./scripts/time-machine.sh restore openclaw-soul-*.tar.gz
+./scripts/claw-time-machine.sh restore openclaw-soul-*.tar.gz
 openclaw gateway start
 ```
 
@@ -88,5 +87,5 @@ openclaw gateway start
 
 ## File Locations
 
-- Backups: `~/.time_machine/`
+- Backups: `~/.claw-time-machine/`
 - Safety backups: `~/.openclaw.bak.<timestamp>/`

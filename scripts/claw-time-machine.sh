@@ -1,13 +1,13 @@
 #!/bin/bash
 # OpenClaw 时光机 - 备份与恢复
-# Usage: time-machine [backup|restore|list] [file]
+# Usage: claw-time-machine [backup|restore|list] [file]
 
 set -e
 
 ACTION=${1:-backup}
 BACKUP_FILE="$2"
 OPENCLAW_DIR="$HOME/.openclaw"
-BACKUP_DIR="$HOME/.time_machine"
+BACKUP_DIR="$HOME/.claw-time-machine"
 
 # 灵魂文件列表
 SOUL_FILES=(
@@ -67,8 +67,8 @@ restore() {
         log_error "请指定备份文件或序号"
         echo ""
         echo "💡 用法:"
-        echo "   time-machine restore 1          # 用序号恢复"
-        echo "   time-machine restore <文件名>   # 用文件名恢复"
+        echo "   claw-time-machine restore 1          # 用序号恢复"
+        echo "   claw-time-machine restore <文件名>   # 用文件名恢复"
         echo ""
         list_backups
         exit 1
@@ -157,7 +157,7 @@ list_backups() {
         echo ""
         echo "📭 暂无备份"
         echo ""
-        echo "💡 创建备份: time-machine backup"
+        echo "💡 创建备份: claw-time-machine backup"
         return 0
     fi
     
@@ -206,14 +206,14 @@ list_backups() {
     
     echo "📊 共 $count 个备份，总计 $total_size_human"
     echo ""
-    echo "💡 恢复备份: time-machine restore <序号或文件名>"
+    echo "💡 恢复备份: claw-time-machine restore <序号或文件名>"
 }
 
 migrate() {
     local target_host="$BACKUP_FILE"
     if [[ -z "$target_host" ]]; then
         log_error "请指定目标服务器"
-        echo "用法: time-machine migrate user@new-server"
+        echo "用法: claw-time-machine migrate user@new-server"
         exit 1
     fi
     
@@ -235,7 +235,7 @@ migrate() {
             echo '安装 OpenClaw...'
             curl -fsSL https://openclaw.ai/install.sh | bash
         fi
-        ~/.openclaw/skills/time-machine/scripts/time-machine restore ~/$filename
+        ~/.openclaw/skills/time-machine/scripts/claw-time-machine restore ~/$filename
         ~/.openclaw/bin/openclaw gateway start
     "
     
@@ -263,20 +263,20 @@ case "$ACTION" in
         echo ""
         echo "📋 命令:"
         echo ""
-        echo "  📝 time-machine backup"
+        echo "  📝 claw-time-machine backup"
         echo "     创建备份"
         echo ""
         echo "  📋 time-machine list"
         echo "     列出所有备份"
         echo ""
-        echo "  ⏪ time-machine restore <序号或文件名>"
+        echo "  ⏪ claw-time-machine restore <序号或文件名>"
         echo "     从备份恢复"
-        echo "     例: time-machine restore 1"
-        echo "     例: time-machine restore openclaw-soul-20260331.tar.gz"
+        echo "     例: claw-time-machine restore 1"
+        echo "     例: claw-time-machine restore openclaw-soul-20260331.tar.gz"
         echo ""
-        echo "  🚚 time-machine migrate <user@host>"
+        echo "  🚚 claw-time-machine migrate <user@host>"
         echo "     一键迁移到新服务器"
-        echo "     例: time-machine migrate root@192.168.1.100"
+        echo "     例: claw-time-machine migrate root@192.168.1.100"
         echo ""
         echo "════════════════════════════════════════════════════"
         exit 1
