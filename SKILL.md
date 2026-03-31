@@ -1,5 +1,5 @@
 ---
-name: time-machine
+name: claw-time-machine
 description: Backup, restore, and migrate OpenClaw installations. Handles complete state preservation including workspace memories, credentials, skills, and configuration. Use when: (1) Backing up OpenClaw to prevent data loss, (2) Migrating to a new server, (3) Restoring from a backup, (4) User mentions "backup", "migrate", "时光机", or server transfer.
 version: 1.0.0
 ---
