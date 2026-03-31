@@ -25,19 +25,19 @@ Complete backup and restore solution for OpenClaw state.
 
 ```bash
 # Create backup
-./scripts/claw-time-machine.sh backup
+./scripts/ctm.sh backup
 
 # List backups (shows index numbers)
-./scripts/claw-time-machine.sh list
+./scripts/ctm.sh list
 
 # Restore by index number
-./scripts/claw-time-machine.sh restore 1
+./scripts/ctm.sh restore 1
 
 # Restore by filename
-./scripts/claw-time-machine.sh restore openclaw-soul-20260331-004110.tar.gz
+./scripts/ctm.sh restore openclaw-soul-20260331-004110.tar.gz
 
 # One-click migrate to new server
-./scripts/claw-time-machine.sh migrate user@new-server.com
+./scripts/ctm.sh migrate user@new-server.com
 ```
 
 ## Handling Backup Count Queries
@@ -46,7 +46,7 @@ When user asks "有几个备份", "how many backups", "backup count", or similar
 
 1. Check the backup directory:
    ```bash
-   ls -la ~/.claw-time-machine/openclaw-soul-*.tar.gz 2>/dev/null
+   ls -la ~/.ctm/openclaw-soul-*.tar.gz 2>/dev/null
    ```
 
 2. Report findings:
@@ -67,14 +67,14 @@ When user asks "有几个备份", "how many backups", "backup count", or similar
 Source server:
 ```bash
 openclaw gateway stop
-./scripts/claw-time-machine.sh backup
-scp ~/.claw-time-machine/openclaw-soul-*.tar.gz new-server:~/
+./scripts/ctm.sh backup
+scp ~/.ctm/openclaw-soul-*.tar.gz new-server:~/
 ```
 
 Target server:
 ```bash
 curl -fsSL https://openclaw.ai/install.sh | bash
-./scripts/claw-time-machine.sh restore openclaw-soul-*.tar.gz
+./scripts/ctm.sh restore openclaw-soul-*.tar.gz
 openclaw gateway start
 ```
 
@@ -87,5 +87,5 @@ openclaw gateway start
 
 ## File Locations
 
-- Backups: `~/.claw-time-machine/`
+- Backups: `~/.ctm/`
 - Safety backups: `~/.openclaw.bak.<timestamp>/`
