@@ -25,19 +25,19 @@ Complete backup and restore solution for OpenClaw state.
 
 ```bash
 # Create backup
-./scripts/time-machine backup
+./scripts/time-machine.sh backup
 
 # List backups (shows index numbers)
-./scripts/time-machine list
+./scripts/time-machine.sh list
 
 # Restore by index number
-./scripts/time-machine restore 1
+./scripts/time-machine.sh restore 1
 
 # Restore by filename
-./scripts/time-machine restore openclaw-soul-20260331-004110.tar.gz
+./scripts/time-machine.sh restore openclaw-soul-20260331-004110.tar.gz
 
 # One-click migrate to new server
-./scripts/time-machine migrate user@new-server.com
+./scripts/time-machine.sh migrate user@new-server.com
 ```
 
 ## Manual Migration Workflow
@@ -45,14 +45,14 @@ Complete backup and restore solution for OpenClaw state.
 Source server:
 ```bash
 openclaw gateway stop
-./scripts/time-machine backup
+./scripts/time-machine.sh backup
 scp ~/.time_machine/openclaw-soul-*.tar.gz new-server:~/
 ```
 
 Target server:
 ```bash
 curl -fsSL https://openclaw.ai/install.sh | bash
-./scripts/time-machine restore openclaw-soul-*.tar.gz
+./scripts/time-machine.sh restore openclaw-soul-*.tar.gz
 openclaw gateway start
 ```
 
