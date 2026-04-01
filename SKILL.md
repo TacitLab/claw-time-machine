@@ -81,10 +81,9 @@ openclaw gateway start
 
 ## Important Notes
 
-1. **Stop service before backup** — Prevents data inconsistency
-2. **Auto-backup on restore** — Script backs up current config before overwriting
-3. **Telegram Bot** — May need new token from @BotFather after IP change
-4. **Node pairing** — Mobile app needs re-pairing with new server
+1. **Stop service before backup** — Prevents data inconsistency during active writes
+2. **Auto-backup on restore** — Script backs up current config before overwriting (safety net)
+3. **Node pairing** — Paired mobile devices remain paired after restore; only re-pair if you cannot connect to the new server's address
 
 ## File Locations
 
