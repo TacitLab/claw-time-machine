@@ -1,7 +1,7 @@
 ---
 name: claw-time-machine
 description: Backup, restore, and migrate OpenClaw installations. Handles complete state preservation including workspace memories, credentials, skills, and configuration. Use when: (1) Backing up OpenClaw to prevent data loss, (2) Migrating to a new server, (3) Restoring from a backup, (4) User mentions "backup", "migrate", "时光机", or server transfer.
-version: 1.0.2
+version: 1.0.3
 ---
 
 # Claw Time Machine - OpenClaw Backup & Migration
@@ -83,7 +83,6 @@ openclaw gateway start
 
 1. **Stop service before backup** — Prevents data inconsistency during active writes
 2. **Auto-backup on restore** — Script backs up current config before overwriting (safety net)
-3. **Node pairing** — Paired mobile devices remain paired after restore; only re-pair if you cannot connect to the new server's address
 
 ## File Locations
 
