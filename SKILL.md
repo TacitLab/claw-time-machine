@@ -1,90 +1,95 @@
 ---
 name: claw-time-machine
-description: Backup, restore, and migrate OpenClaw installations. Handles complete state preservation including workspace memories, credentials, skills, and configuration. Use when: (1) Backing up OpenClaw to prevent data loss, (2) Migrating to a new server, (3) Restoring from a backup, (4) User mentions "backup", "migrate", "时光机", or server transfer.
-version: 1.0.3
+description: "Backup, restore, and migrate OpenClaw installations. Preserve workspace memories, credentials, custom skills, scheduled tasks, and core configuration. Use when the user wants to back up OpenClaw, restore from a backup, migrate to another machine or server, inspect or count existing backups, or mentions backup, restore, migration, 时光机, 迁移, 备份, 恢复."
 ---
 
-# Claw Time Machine - OpenClaw Backup & Migration
+# Claw Time Machine
 
-Complete backup and restore solution for OpenClaw state.
+Back up, restore, and migrate the important state of an OpenClaw installation.
 
-## What Gets Backed Up (The "Soul")
+## Run the script
 
-| Path | Contents |
-|------|----------|
-| `workspace/` | Memories, SOUL.md, USER.md, daily logs |
-| `credentials/` | API keys, tokens |
-| `telegram/` | Telegram channel configuration |
-| `skills/` | Custom skills |
-| `cron/` | Scheduled tasks |
-| `openclaw.json` | Main configuration |
-| `identity/` | Identity files |
-
-**Excluded**: OpenClaw binaries (~1.4GB), can be reinstalled.
-
-## Quick Start
+Use the bundled script:
 
 ```bash
-# Create backup
-./scripts/ctm.sh backup
+./scripts/ctm.sh <command> [args]
+```
 
-# List backups (shows index numbers)
+Commands:
+
+- `backup [filename]` — create a backup under `~/.ctm/`
+- `list` — show backups, newest first
+- `restore <index|filename|latest> [--force]` — restore a backup
+- `migrate <user@host> [--remote-dir <dir>] [--clean-remote-archive] [--force]` — copy a backup to another machine and restore it there
+
+## What the script preserves
+
+The script backs up only the important OpenClaw state, not the full installation binaries:
+
+- `workspace/`
+- `credentials/`
+- `telegram/`
+- `skills/`
+- `cron/`
+- `openclaw.json`
+- `identity/`
+
+Each archive also includes a `manifest.txt` file that lists the captured paths.
+
+## Core workflow
+
+### Create a backup
+
+Before a risky change, server migration, or major upgrade:
+
+```bash
+./scripts/ctm.sh backup
+```
+
+If the user asks how many backups exist or wants to inspect them:
+
+```bash
 ./scripts/ctm.sh list
+```
 
-# Restore by index number
+Report the count, filenames, sizes, and highlight the newest backup.
+
+### Restore a backup
+
+Prefer listing backups first when the user is choosing by index:
+
+```bash
+./scripts/ctm.sh list
 ./scripts/ctm.sh restore 1
-
-# Restore by filename
-./scripts/ctm.sh restore openclaw-soul-20260331-004110.tar.gz
-
-# One-click migrate to new server
-./scripts/ctm.sh migrate user@new-server.com
 ```
 
-## Handling Backup Count Queries
+Use `latest` when the intent is obvious:
 
-When user asks "有几个备份", "how many backups", "backup count", or similar:
-
-1. Check the backup directory:
-   ```bash
-   ls -la ~/.ctm/openclaw-soul-*.tar.gz 2>/dev/null
-   ```
-
-2. Report findings:
-   - **If directory empty/missing**: "还没有备份"
-   - **If backups exist**: "找到 N 个备份：" + 列出文件名、大小、创建时间
-   - **Show latest**: 特别指出最新的备份
-
-### Example Responses
-
-- "找到 3 个备份：
-  - openclaw-soul-20260331-004110.tar.gz (256KB, 3月31日)
-  - openclaw-soul-20260330-120000.tar.gz (251KB, 3月30日)
-  - openclaw-soul-20260328-080000.tar.gz (248KB, 3月28日)
-  最新的是 3月31日 的备份"
-
-## Manual Migration Workflow
-
-Source server:
 ```bash
-openclaw gateway stop
-./scripts/ctm.sh backup
-scp ~/.ctm/openclaw-soul-*.tar.gz new-server:~/
+./scripts/ctm.sh restore latest
 ```
 
-Target server:
+Add `--force` only when non-interactive restore is clearly intended.
+
+### Migrate to another machine
+
+Use the migration command when the user wants a full move to a new server:
+
 ```bash
-curl -fsSL https://openclaw.ai/install.sh | bash
-./scripts/ctm.sh restore openclaw-soul-*.tar.gz
-openclaw gateway start
+./scripts/ctm.sh migrate user@new-server
 ```
 
-## Important Notes
+The script creates a fresh backup, copies it to the target host, and restores it there without requiring the skill to already exist on the target machine.
 
-1. **Stop service before backup** — Prevents data inconsistency during active writes
-2. **Auto-backup on restore** — Script backs up current config before overwriting (safety net)
+If the user wants the copied archive removed from the target machine after a successful restore, add `--clean-remote-archive`.
 
-## File Locations
+## Important safety rules
 
-- Backups: `~/.ctm/`
-- Safety backups: `~/.openclaw.bak.<timestamp>/`
+1. Treat restore as destructive: it overwrites the preserved state paths.
+2. Keep the automatic safety backup path shown by the script so rollback remains possible.
+3. This skill does not stop or start Gateway automatically.
+4. If the target environment is unusual, read `references/usage.md` before doing a migration.
+
+## Additional guidance
+
+For detailed examples, migration notes, and failure handling, read `references/usage.md`.
